@@ -32,7 +32,7 @@ This mixin adds to you Manager's QuerySet new methods for any BooleanField:
 * filter\_by\_&lt;field_name&gt;
 * exclude\_&lt;field_name&gt;
 
-If &lt;field_name&gt; starts with "is\_", then will be created same methods, without prefix "is\_". 
+If &lt;field\_name&gt; starts with "is\_", then will be created same methods, without prefix "is\_". 
 For our example will be created methods:
 
 * filter\_by\_is_published()
