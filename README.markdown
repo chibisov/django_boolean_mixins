@@ -114,7 +114,7 @@ This mixin adds 2 actions for every BooleanField from list\_display option.
 First action - to set False, second - to set True.  
 
 
-![actions example](static/img/actions.png "Title")
+![actions example](https://github.com/chibisov/django_boolean_mixins/raw/master/static/img/actions.png "Title")
 
 By default adds actions with names like:
 
