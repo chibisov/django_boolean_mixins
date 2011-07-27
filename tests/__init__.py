@@ -3,10 +3,8 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.query import QuerySet
 from django.test import TestCase
-from django.test.client import RequestFactory
 
 from django_boolean_mixins.models import ModelBooleanMixin
-from django_boolean_mixins.tests.mocks import RequestMock
 
 # Models
 class Article(ModelBooleanMixin, models.Model):

@@ -2,7 +2,6 @@
 from django.contrib import admin
 from django.contrib.messages.api import MessageFailure
 from django.db import models
-from django.utils.translation import ugettext_lazy, ugettext as _
 
 class AdminBooleanMixin(admin.ModelAdmin):
     boolean_short_descriptions = {}

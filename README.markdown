@@ -131,7 +131,7 @@ You can specify your own labels in admin.py:
         }
         ...
         
-For more flexibility you can use model\_verbose\_name\_plural and field\_verbose\_name, which will be [formatted](http://docs.python.org/library/stdtypes.html#str.format):
+For more flexibility you can use **model\_verbose\_name\_plural** and **field\_verbose\_name**, which will be [formatted](http://docs.python.org/library/stdtypes.html#str.format):
     
     class ArticleAdmin(ActionBooleanMixin, admin.ModelAdmin):
         ...

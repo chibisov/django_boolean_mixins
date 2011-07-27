@@ -3,7 +3,6 @@ from django.db import models
 from django.db.models import Q
 from django.db.models.query import QuerySet
 from django.core.exceptions import ValidationError
-from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
 
 # models
