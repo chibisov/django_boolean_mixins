@@ -1,4 +1,4 @@
-# test models
+# encoding: utf8
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.query import QuerySet
@@ -24,6 +24,14 @@ class Article(ModelBooleanMixin, models.Model):
 class ArticleWithCollideFields(ModelBooleanMixin, models.Model):
     is_published = models.BooleanField(default=True)
     published = models.BooleanField(default=True)
+    
+class UnicodeArticle(ModelBooleanMixin, models.Model):
+    name = models.CharField(verbose_name=u"название", max_length=100)
+    is_published = models.BooleanField(verbose_name=u"Опубликовано")
+    
+    class Meta:
+        verbose_name = u"Новость"
+        verbose_name = u"Новости"
 
 # model Testing
 class MethodsCreationTest(TestCase):
@@ -123,7 +131,14 @@ class ArticleAdmin(AdminBooleanMixin, admin.ModelAdmin):
     
     boolean_short_descriptions = {
         "is_published": (None, "Unpublish"),
-        "active": (None, "Deactivate selected {verbose_name_plural}")
+        "active": (None, "Deactivate {field_verbose_name} for selected {model_verbose_name_plural}")
+    }
+
+class UnicodeArticleAdmin(AdminBooleanMixin, admin.ModelAdmin):
+    list_display = ("name", "is_published")
+    
+    boolean_short_descriptions = {
+        "is_published": (None, u"Разопубликова {model_verbose_name_plural}"),
     }
     
 admin.site.register(Article, ArticleAdmin)
@@ -163,7 +178,7 @@ class AdminActionMethodsTest(TestCase):
         self.assertEquals(self.article_admin.create_action(field=is_published, 
                                                            action_name="nevermind",
                                                            bool_value=True)[2], 
-                          "is published set to True")
+                          "Set selected articles is published to True")
                           
         self.assertEquals(self.article_admin.create_action(field=is_published, 
                                                            action_name="nevermind",
@@ -172,27 +187,29 @@ class AdminActionMethodsTest(TestCase):
         self.assertEquals(self.article_admin.create_action(field=active, 
                                                            action_name="nevermind",
                                                            bool_value=True)[2], 
-                          "super active set to True")
+                          "Set selected articles super active to True")
         self.assertEquals(self.article_admin.create_action(field=active, 
                                                            action_name="nevermind",
                                                            bool_value=False)[2], 
-                          "Deactivate selected articles")
+                          "Deactivate super active for selected articles")
     
     # Admin site testing
     def test_show_actions_for_fields_only_from_list_display(self):
         # leave_me_alone not in list
         self.assertFalse(hasattr(self.article_admin, "leave_me_alone_to_true_action"))
         self.assertFalse(hasattr(self.article_admin, "leave_me_alone_to_false_action"))
+        
+    def test_unicode(self):
+        admin.site.register(UnicodeArticle, UnicodeArticleAdmin)
     
-# TODO custom behaviors
 class CustomBehaviorsTest(TestCase):
     def setUp(self):        
         for i in range(10):
             devnull = Article.objects.create(name="Nevermind", is_published=True)
         
         self.user = User.objects.create(username="chibisov",
-                                           email="noemail@ya.ru",
-                                           password="123456")
+                                        email="noemail@ya.ru",
+                                        password="123456")
         
         user = self.user
         class CustomArticleAdmin(ArticleAdmin):
@@ -214,4 +231,3 @@ class CustomBehaviorsTest(TestCase):
         
         # check new behavior
         self.assertEquals(qset_to_update[0].user_updated, self.user)
-            

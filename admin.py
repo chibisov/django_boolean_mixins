@@ -47,7 +47,7 @@ class AdminBooleanMixin(admin.ModelAdmin):
         def func(modeladmin, request, queryset):
             rows_updated = queryset.update(**{field.name: bool_value})
             
-            msg = "{rows_updated} {verbose_name_plural} affected".format(
+            msg = u"{rows_updated} {verbose_name_plural} affected".format(
                                                 rows_updated=rows_updated, 
                                                 verbose_name_plural=self.model._meta.verbose_name_plural)
             
@@ -69,12 +69,16 @@ class AdminBooleanMixin(admin.ModelAdmin):
             else:
                 short_description_for_this_method = custom_short_description[1]                
         
+        model_verbose_name_plural = field.model._meta.verbose_name_plural.lower()
+        field_verbose_name = field.verbose_name
+        
         if short_description_for_this_method:
-            verbose_name_plural = field.model._meta.verbose_name_plural.lower()
-            short_description = short_description_for_this_method.format(verbose_name_plural=verbose_name_plural)
+            short_description = short_description_for_this_method.format(model_verbose_name_plural=model_verbose_name_plural,
+                                                                         field_verbose_name=field_verbose_name)
         else:
-            short_description = ("{field.verbose_name} set to {bool_value}"
-                                                .format(field=field, 
+            short_description = (u"Set selected {model_verbose_name_plural} {field_verbose_name} to {bool_value}"
+                                                .format(field_verbose_name=field_verbose_name, 
+                                                        model_verbose_name_plural=model_verbose_name_plural,
                                                         bool_value=bool_value))
         return (func, name, short_description)
         

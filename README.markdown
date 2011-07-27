@@ -27,10 +27,10 @@ Add this application to your settings.py:
         
         user_updated = models.ForeignKey(User, blank=True, null=True)
 
-This mixin adds to you Manager's QuerySet new methods for any BooleanField:  
+This mixin adds to your Manager's QuerySet new methods for any BooleanField:  
     
-* filter\_by\_&lt;field_name&gt;
-* exclude\_&lt;field_name&gt;
+* filter\_by\_&lt;field\_name&gt;
+* exclude\_&lt;field\_name&gt;
 
 If &lt;field\_name&gt; starts with "is\_", then will be created same methods, without prefix "is\_". 
 For our example will be created methods:
@@ -103,7 +103,7 @@ Or in templates:
     
     from django.contrib import admin
     from yourapp.models import Article
-    from django_boolean_mixins.admin.ActionBooleanMixin
+    from django_boolean_mixins.admin import ActionBooleanMixin
 
     class ArticleAdmin(ActionBooleanMixin, admin.ModelAdmin):
         list_display = ("name", "is_published", "active")
@@ -118,8 +118,8 @@ First action - to set False, second - to set True.
 
 By default adds actions with names like:
 
-* "Set selected &lt;model\_verbose\_name\_plural&gt; &lt;field\_name&gt; to True"
-* "Set selected &lt;model\_verbose\_name\_plural&gt; &lt;field\_name&gt; to False"
+* "Set selected &lt;model\_verbose\_name\_plural&gt; &lt;field\_verbose\_name&gt; to True"
+* "Set selected &lt;model\_verbose\_name\_plural&gt; &lt;field\_verbose\_name&gt; to False"
 
 You can specify your own labels in admin.py:
 
@@ -131,15 +131,15 @@ You can specify your own labels in admin.py:
         }
         ...
         
-For more flexibility your can use verbose\_name\_plural, which will be [formatted](http://docs.python.org/library/stdtypes.html#str.format):
+For more flexibility you can use model\_verbose\_name\_plural and field\_verbose\_name, which will be [formatted](http://docs.python.org/library/stdtypes.html#str.format):
     
     class ArticleAdmin(ActionBooleanMixin, admin.ModelAdmin):
         ...
         boolean_short_descriptions = {
-            "is_published": ("Publish selected {verbose_name_plural}", 
-                             "Unpublish selected {verbose_name_plural}"),
-            "active": ("Activate selected {verbose_name_plural}", 
-                       "Deactivate selected {verbose_name_plural}")
+            "is_published": ("Publish selected {model_verbose_name_plural}", 
+                             "Unpublish selected {model_verbose_name_plural}"),
+            "active": ("Activate selected {model_verbose_name_plural}", 
+                       "Deactivate {field_verbose_name} for selected {model_verbose_name_plural}")
         }
         ...
 
