@@ -103,9 +103,9 @@ Or in templates:
     
     from django.contrib import admin
     from yourapp.models import Article
-    from django_boolean_mixins.admin import ActionBooleanMixin
+    from django_boolean_mixins.admin import AdminBooleanMixin
 
-    class ArticleAdmin(ActionBooleanMixin, admin.ModelAdmin):
+    class ArticleAdmin(AdminBooleanMixin, admin.ModelAdmin):
         list_display = ("name", "is_published", "active")
 
     admin.site.register(Article, ArticleAdmin)
@@ -123,7 +123,7 @@ By default adds actions with names like:
 
 You can specify your own labels in admin.py:
 
-    class ArticleAdmin(ActionBooleanMixin, admin.ModelAdmin):
+    class ArticleAdmin(AdminBooleanMixin, admin.ModelAdmin):
         ...
         boolean_short_descriptions = {
             "is_published": ("Publish selected articles", "Unpublish selected articles"),
@@ -133,7 +133,7 @@ You can specify your own labels in admin.py:
         
 For more flexibility you can use **model\_verbose\_name\_plural** and **field\_verbose\_name**, which will be [formatted](http://docs.python.org/library/stdtypes.html#str.format):
     
-    class ArticleAdmin(ActionBooleanMixin, admin.ModelAdmin):
+    class ArticleAdmin(AdminBooleanMixin, admin.ModelAdmin):
         ...
         boolean_short_descriptions = {
             "is_published": ("Publish selected {model_verbose_name_plural}", 
@@ -153,7 +153,7 @@ in admin.py, which takes 2 arguments:
 
 For example, update who changed the boolean state:
 
-    class ArticleAdmin(ActionBooleanMixin, admin.ModelAdmin):
+    class ArticleAdmin(AdminBooleanMixin, admin.ModelAdmin):
         ...
         def after_any_boolean_action(self, queryset, request):
             queryset.update(user_updated=request.user)
