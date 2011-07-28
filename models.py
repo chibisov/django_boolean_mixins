@@ -1,4 +1,4 @@
-# encoding: utf8
+# -*- coding: utf-8 -*-
 from django.db import models
 from django.db.models import Q
 from django.db.models.query import QuerySet
