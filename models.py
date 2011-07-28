@@ -3,10 +3,8 @@ from django.db import models
 from django.db.models import Q
 from django.db.models.query import QuerySet
 from django.core.exceptions import ValidationError
-from django.core.exceptions import ValidationError
 
 # models
-
 class ModelBooleanMixinQuerySet(QuerySet):
     def __init__(self, *args, **kwargs):
         super(ModelBooleanMixinQuerySet, self).__init__(*args, **kwargs)
