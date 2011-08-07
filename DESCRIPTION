@@ -1,0 +1,1 @@
+Django app with some usefull mixins for models.BooleanField. Every mixin is independent.
