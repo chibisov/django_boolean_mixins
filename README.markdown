@@ -3,7 +3,18 @@
 Django app with some usefull mixins for models.BooleanField. Every mixin is independent. 
 
 ## Installation
-Add this application to your settings.py:
+1) Install:
+
+    git clone clone git://github.com/chibisov/django_boolean_mixins.git
+    cd django_boolean_mixins/
+    sudo python setup.py install
+
+    # or with custom destination
+
+    sudo python setup.py install --install-lib=/Library/Python/2.6/site-packages
+    
+    
+2) Add application to your settings.py:
     
     INSTALLED_APPS = (
         ...
