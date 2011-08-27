@@ -60,8 +60,13 @@ class ModelBooleanMixinManager(models.Manager):
     def get_query_set(self):
         return ModelBooleanMixinQuerySet(self.model)
         
-    # def __getattr__(self, name):
-        # return getattr(self.get_query_set(), name)
+    def __getattr__(self, name):
+        black_list_of_prefix = ("_", "__")
+        is_delegate = bool([i for i in black_list_of_prefix if not name.startswith(i)])
+        if is_delegate:
+            return getattr(self.get_query_set(), name)
+        else:
+            raise AttributeError
 
 # Create your models here.
 class ModelBooleanMixin(models.Model):
