@@ -108,6 +108,32 @@ Or in templates:
     {% for article in articles.filter_by_published.filter_by_active %}
         {{ article.content }}
     {% endfor %}
+    
+One of usefull example is creating your custom mixin:
+
+    class PublishedMixin(ModelBooleanMixin, models.Model):
+        is_published = models.BooleanField(default=True)
+
+        class Meta:
+            abstract = True
+    
+    class Category(PublishedMixin, models.Model):
+        name = models.CharField(max_length=255)
+    
+    class Article(PublishedMixin, models.Model):
+        name = models.CharField(max_length=255)
+        category = models.ForeignKey(Category)
+        
+You don't need to add by hand methods for every boolean field:
+    
+    # iterate by published categories
+    for category in Category.objects.filter_by_published():
+        # iterate by not published articles
+        for article in category.article_set.exclude_published():
+            print """This is not published article with name 
+                     '{article.name}' of published category 
+                     with name '{category.name}' """.format(category=category, 
+                                                            article=article)
 
 
 ## AdminBooleanMixin
