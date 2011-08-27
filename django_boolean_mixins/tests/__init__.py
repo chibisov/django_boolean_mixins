@@ -119,6 +119,14 @@ class MethodsWorksRightTest(TestCase):
                              ArticleWithCollideFields.objects.all().filter_by_is_published().count(),
                              msg="Models with collided names shouldn't create magic filtering")
 
+    def test_delegation_exists(self):
+        self.assertTrue(hasattr(Article.objects, "filter_by_published"),
+                        msg="Delegation is not working. Check __getattr__ method of manager")
+
+    def test_delegation_works_right(self):
+        self.assertEquals(set(Article.objects.all().filter_by_published().values_list("id", flat=True)),
+                          set(Article.objects.filter_by_published().values_list("id", flat=True)))
+
 # admin Testing
 from django.contrib import admin
 from django_boolean_mixins.admin import AdminBooleanMixin
@@ -190,14 +198,6 @@ class AdminActionMethodsTest(TestCase):
                                                            action_name="nevermind",
                                                            bool_value=False)[2], 
                           "Deactivate super active for selected articles")
-
-    def test_delegation_exists(self):
-        self.assertTrue(hasattr(Article.objects, "filter_by_published"),
-                        msg="Delegation is not working. Check __getattr__ method of manager")
-
-    def test_delegation_works_right(self):
-        self.assertEquals(set(Article.objects.all().filter_by_published().values_list("id", flat=True)),
-                          set(Article.objects.filter_by_published().values_list("id", flat=True)))
     
     # Admin site testing
     def test_show_actions_for_fields_only_from_list_display(self):
