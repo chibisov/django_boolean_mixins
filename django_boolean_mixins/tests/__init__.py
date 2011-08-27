@@ -6,8 +6,15 @@ from django.test import TestCase
 
 from django_boolean_mixins.models import ModelBooleanMixin
 
+class Category(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __unicode__(self):
+        return u"{self.name}".format(self=self)
+
 # Models
 class Article(ModelBooleanMixin, models.Model):
+    category = models.ForeignKey('Category', blank=True, null=True)
     name = models.CharField(max_length=100)
 
     is_published = models.BooleanField(default=True)
@@ -73,13 +80,16 @@ class MethodsCreationTest(TestCase):
         
 class MethodsWorksRightTest(TestCase):
     def setUp(self):
+        # create category
+        self.category = Category.objects.create(name="Nevermind category")
+
         # create 10 published and unactive articles
         for i in range(10):
-            devnull = Article.objects.create(name="Nevermind", is_published=True, active=False)
+            devnull = Article.objects.create(name="Nevermind", is_published=True, active=False, category=self.category)
         
          # create 4 unpublished and active articles
         for i in range(4):
-            devnull = Article.objects.create(name="Nevermind", is_published=False, active=True)
+            devnull = Article.objects.create(name="Nevermind", is_published=False, active=True, category=self.category)
             
             
     def test_filtering_and_excluding(self):
@@ -126,6 +136,9 @@ class MethodsWorksRightTest(TestCase):
     def test_delegation_works_right(self):
         self.assertEquals(set(Article.objects.all().filter_by_published().values_list("id", flat=True)),
                           set(Article.objects.filter_by_published().values_list("id", flat=True)))
+
+    def test_that_delegation_works_with_related_query(self):
+        self.assertTrue(hasattr(self.category.article_set, "filter_by_published"))
 
 # admin Testing
 from django.contrib import admin
