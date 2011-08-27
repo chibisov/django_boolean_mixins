@@ -68,7 +68,7 @@ class MethodsCreationTest(TestCase):
                          msg="Magic names should replace only is_ prefix, not other is_")
         self.assertTrue(hasattr(Man.objects.all(), "filter_by_so_easy_is_so"))
     
-    def _test_custom_method_return_type(self):
+    def test_custom_method_return_type(self):
         self.assertTrue(isinstance(self.Article.objects.all().filter_by_is_published(), QuerySet))
         
 class MethodsWorksRightTest(TestCase):
