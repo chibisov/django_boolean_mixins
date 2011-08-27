@@ -179,6 +179,16 @@ For more flexibility you can use **model\_verbose\_name\_plural** and **field\_v
                        "Deactivate {field_verbose_name} for selected {model_verbose_name_plural}")
         }
         ...
+        
+If you want, that one of actions used default text, you can specify it to None: 
+
+    class ArticleAdmin(AdminBooleanMixin, admin.ModelAdmin):
+        ...
+        boolean_short_descriptions = {
+            "is_published": (None, "Unpublish selected {model_verbose_name_plural}"),
+            ...
+        }
+        ...
 
 ### Custom behavior
        
